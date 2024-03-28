@@ -1,0 +1,24 @@
+Deploy:
+  input_shape:
+  - 1
+  - 3
+  - 480
+  - 640
+  model: model.pdmodel
+  output_dtype: float32
+  output_op: none
+  params: model.pdiparams
+  transforms:
+  - target_size:
+    - 640
+    - 480
+    type: Resize
+  - mean:
+    - 0.485
+    - 0.456
+    - 0.406
+    std:
+    - 0.229
+    - 0.224
+    - 0.225
+    type: Normalize

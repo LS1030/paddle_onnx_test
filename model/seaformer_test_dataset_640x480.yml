@@ -1,0 +1,81 @@
+batch_size: 48
+iters: 49710
+
+model:
+  type: SeaFormerSeg
+  backbone:
+    type: SeaFormer_small
+    pretrained: https://bj.bcebos.com/paddleseg/dygraph/ade20k/backbone/seaformer_small_imagenet_pretrained.pdparams
+  num_classes: 2
+  head_channels: 128
+  embed_dims: [96, 128]
+  is_dw: True
+  dropout_ratio: 0.1
+  align_corners: False
+  input_transform: 'multiple_select'
+  pretrained: null
+
+train_dataset:
+  type: Dataset
+  mode: train
+  dataset_root: ./
+  train_path: ./train.txt # 此文件仅为了适配val.py，不训练，因此train.txt内容为空
+  num_classes: 2
+  transforms:
+    - type: ResizeStepScaling
+      min_scale_factor: 0.5
+      max_scale_factor: 2.0
+      scale_step_size: 0.25
+    - type: RandomPaddingCrop
+      crop_size: [640, 480]
+    - type: RandomHorizontalFlip
+    - type: RandomVerticalFlip
+    - type: RandomDistort
+      brightness_range: 0.5
+      contrast_range: 0.4
+      saturation_range: 0.4
+    - type: RandomBlur
+    - type: RandomNoise
+    - type: Normalize
+      mean: [0.485, 0.456, 0.406]
+      std: [0.229, 0.224, 0.225]
+
+val_dataset:
+  type: Dataset
+  mode: val
+  dataset_root: ./
+  val_path: ./test.txt # 1000张
+  num_classes: 2
+  transforms:
+    - type: Resize
+      target_size: [640, 480]
+    - type: Normalize
+      mean: [0.485, 0.456, 0.406]
+      std: [0.229, 0.224, 0.225]
+
+loss:
+  types:
+    - type: CrossEntropyLoss # DiceLoss
+      weight: [0.7, 0.3]
+  coef: [1.0]
+
+optimizer:
+  type: AdamW
+  beta1: 0.9
+  beta2: 0.999
+  weight_decay: 0.01
+  custom_cfg:
+    - name: pos_emb
+      weight_decay_mult: 0.0
+    - name: head
+      lr_mult: 10.0
+    - name: norm
+      weight_decay_mult: 0.0
+
+lr_scheduler:
+  type: PolynomialDecay
+  learning_rate: 2.0e-4 #4e-4
+  power: 1.
+  end_lr: 1.0e-6
+  warmup_iters: 1500
+  warmup_start_lr: 1.0e-6

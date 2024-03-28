@@ -1,0 +1,11 @@
+images/test/back_20240112-111331_1009.jpg labels/test/back_20240112-111331_1009.png
+images/test/back_20240112-111510_1183.jpg labels/test/back_20240112-111510_1183.png
+images/test/back_20240112-124155_1143.jpg labels/test/back_20240112-124155_1143.png
+images/test/front_20240112-122604_138.jpg labels/test/front_20240112-122604_138.png
+images/test/front_20240112-131731_5609.jpg labels/test/front_20240112-131731_5609.png
+images/test/left_20240112-105644_214.jpg labels/test/left_20240112-105644_214.png
+images/test/left_20240112-123725_783.jpg labels/test/left_20240112-123725_783.png
+images/test/left_20240112-131435_4459.jpg labels/test/left_20240112-131435_4459.png
+images/test/left_20240112-131832_5716.jpg labels/test/left_20240112-131832_5716.png
+images/test/right_20240112-111326_1000.jpg labels/test/right_20240112-111326_1000.png
+images/test/right_20240112-140624_10788.jpg labels/test/right_20240112-140624_10788.png

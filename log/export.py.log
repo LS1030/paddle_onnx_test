@@ -1,0 +1,165 @@
+2024-03-28 15:15:09 [INFO]
+------------Environment Information-------------
+platform: Linux-5.15.0-101-generic-x86_64-with-glibc2.31
+Python: 3.10.12 | packaged by conda-forge | (main, Jun 23 2023, 22:40:32) [GCC 12.3.0]
+Paddle compiled with cuda: True
+NVCC: Build cuda_12.2.r12.2/compiler.33191640_0
+cudnn: 8.9
+GPUs used: 1
+CUDA_VISIBLE_DEVICES: None
+GPU: ['GPU 0: NVIDIA GeForce']
+GCC: gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0
+PaddleSeg: 2.9.0
+PaddlePaddle: 2.5.1
+OpenCV: 4.6.0
+------------------------------------------------
+2024-03-28 15:15:09 [INFO]
+---------------Config Information---------------
+batch_size: 48
+iters: 49710
+train_dataset:
+  dataset_root: ./
+  mode: train
+  num_classes: 2
+  train_path: ./train.txt
+  transforms:
+  - max_scale_factor: 2.0
+    min_scale_factor: 0.5
+    scale_step_size: 0.25
+    type: ResizeStepScaling
+  - crop_size:
+    - 640
+    - 480
+    type: RandomPaddingCrop
+  - type: RandomHorizontalFlip
+  - type: RandomVerticalFlip
+  - brightness_range: 0.5
+    contrast_range: 0.4
+    saturation_range: 0.4
+    type: RandomDistort
+  - type: RandomBlur
+  - type: RandomNoise
+  - mean:
+    - 0.485
+    - 0.456
+    - 0.406
+    std:
+    - 0.229
+    - 0.224
+    - 0.225
+    type: Normalize
+  type: Dataset
+val_dataset:
+  dataset_root: ./
+  mode: val
+  num_classes: 2
+  transforms:
+  - target_size:
+    - 640
+    - 480
+    type: Resize
+  - mean:
+    - 0.485
+    - 0.456
+    - 0.406
+    std:
+    - 0.229
+    - 0.224
+    - 0.225
+    type: Normalize
+  type: Dataset
+  val_path: ./test.txt
+optimizer:
+  beta1: 0.9
+  beta2: 0.999
+  custom_cfg:
+  - name: pos_emb
+    weight_decay_mult: 0.0
+  - lr_mult: 10.0
+    name: head
+  - name: norm
+    weight_decay_mult: 0.0
+  type: AdamW
+  weight_decay: 0.01
+lr_scheduler:
+  end_lr: 1.0e-06
+  learning_rate: 0.0002
+  power: 1.0
+  type: PolynomialDecay
+  warmup_iters: 1500
+  warmup_start_lr: 1.0e-06
+loss:
+  coef:
+  - 1.0
+  types:
+  - type: CrossEntropyLoss
+    weight:
+    - 0.7
+    - 0.3
+model:
+  align_corners: false
+  backbone:
+    pretrained: https://bj.bcebos.com/paddleseg/dygraph/ade20k/backbone/seaformer_small_imagenet_pretrained.pdparams
+    type: SeaFormer_small
+  dropout_ratio: 0.1
+  embed_dims:
+  - 96
+  - 128
+  head_channels: 128
+  input_transform: multiple_select
+  is_dw: true
+  num_classes: 2
+  pretrained: null
+  type: SeaFormerSeg
+------------------------------------------------
+
+2024-03-28 15:15:09 [INFO]      Use the following config to build model
+model:
+  align_corners: false
+  backbone:
+    pretrained: https://bj.bcebos.com/paddleseg/dygraph/ade20k/backbone/seaformer_small_imagenet_pretrained.pdparams
+    type: SeaFormer_small
+  dropout_ratio: 0.1
+  embed_dims:
+  - 96
+  - 128
+  head_channels: 128
+  input_transform: multiple_select
+  is_dw: true
+  num_classes: 2
+  pretrained: null
+  type: SeaFormerSeg
+W0328 15:15:09.155889 231386 gpu_resources.cc:119] Please NOTE: device: 0, GPU Compute Capability: 8.6, Driver API Version: 12.2, Runtime API Version: 12.0
+W0328 15:15:09.155910 231386 gpu_resources.cc:149] device: 0, cuDNN Version: 8.9.
+2024-03-28 15:15:09 [INFO]      Loading pretrained model from https://bj.bcebos.com/paddleseg/dygraph/ade20k/backbone/seaformer_small_imagenet_pretrained.pdparams
+2024-03-28 15:15:09 [INFO]      There are 471/471 variables loaded into SeaFormer.
+2024-03-28 15:15:09 [INFO]      Loaded trained params successfully.
+I0328 15:15:10.541453 231386 interpretercore.cc:237] New Executor is Running.
+2024-03-28 15:15:10 [INFO]
+---------------Deploy Information---------------
+Deploy:
+  input_shape:
+  - 1
+  - 3
+  - 480
+  - 640
+  model: model.pdmodel
+  output_dtype: float32
+  output_op: none
+  params: model.pdiparams
+  transforms:
+  - target_size:
+    - 640
+    - 480
+    type: Resize
+  - mean:
+    - 0.485
+    - 0.456
+    - 0.406
+    std:
+    - 0.229
+    - 0.224
+    - 0.225
+    type: Normalize
+
+2024-03-28 15:15:10 [INFO]      The inference model is saved in dataset/ZM/test_dataset/model/deploy

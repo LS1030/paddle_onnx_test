@@ -1,0 +1,15 @@
+python script/onnx_calculate_miou.py \
+    --config model/deploy/deploy.yaml \
+    --model_path model/deploy/model.onnx \
+    --image_root_path ./ \
+    --image_filelist test.txt
+Loaded ONNX model from model/deploy/model.onnx
+Loaded config file from model/deploy/deploy.yaml
+mean: [0.485 0.456 0.406]
+std: [0.229 0.224 0.225]
+Number of images: 11
+Calculating mIoU ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00
+mIoU: 89.13%
+IoU per class:
+Class 0: 80.66%
+Class 1: 97.60%
